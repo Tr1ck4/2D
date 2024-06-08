@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 movement;
 
     private void Start() {
+        animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
     }
 
@@ -49,39 +50,13 @@ public class PlayerMovement : MonoBehaviour
 
     void MoveCharacter()
     {
-        float moveHorizontal = 0f;
-        float moveVertical = 0f;
+        movement.x = Input.GetAxisRaw("Horizontal");
+        movement.y = Input.GetAxisRaw("Vertical");
 
-        // Check for horizontal movement
-        if (Input.GetKey(KeyCode.A))
-        {
-            moveHorizontal = -1f;
-        }
-        else if (Input.GetKey(KeyCode.D))
-        {
-            moveHorizontal = 1f;
-        }
-
-        // Check for vertical movement
-        if (Input.GetKey(KeyCode.W))
-        {
-            moveVertical = 1f;
-        }
-        else if (Input.GetKey(KeyCode.S))
-        {
-            moveVertical = -1f;
-        }
-
-        // Update animator parameters
-        animator.SetFloat("Speed", Mathf.Abs(moveHorizontal) + Mathf.Abs(moveVertical));
-        animator.SetFloat("X", moveHorizontal);
-        animator.SetFloat("Y", moveVertical);
-
-        // Normalize the movement vector to ensure consistent speed in all directions
-        Vector2 movement = new Vector2(moveHorizontal, moveVertical).normalized;
-
-        // Set the rigidbody velocity to the movement vector multiplied by the run speed
-        rb.velocity = movement * runSpeed;
+        // Set animator parameters
+        animator.SetFloat("Horizontal", movement.x);
+        animator.SetFloat("Vertical", movement.y);
+        animator.SetBool("isWalking", movement.sqrMagnitude > 0.1f);
     }
 
     // Update is called once per frame
@@ -93,5 +68,11 @@ public class PlayerMovement : MonoBehaviour
         {
             StartCoroutine(Chop());
         }
+    }
+
+    void FixedUpdate()
+    {
+        // Move the character
+        rb.MovePosition(rb.position + movement * runSpeed * Time.fixedDeltaTime);
     }
 }
