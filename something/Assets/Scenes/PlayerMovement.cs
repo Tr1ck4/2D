@@ -44,7 +44,9 @@ public class PlayerMovement : MonoBehaviour
     IEnumerator Chop()
     {
         animator.SetBool("isChop", true);
-        yield return new WaitForSeconds(0.0f);
+        animator.Play("chopping");
+        yield return new WaitForSeconds(0.4f);
+        animator.Play("idle_right");
         animator.SetBool("isChop", false);
     }
 
@@ -56,7 +58,7 @@ public class PlayerMovement : MonoBehaviour
         // Set animator parameters
         animator.SetFloat("Horizontal", movement.x);
         animator.SetFloat("Vertical", movement.y);
-        animator.SetBool("isWalking", movement.sqrMagnitude > 0.1f);
+        animator.SetBool("isWalking", movement.sqrMagnitude > 0f);
     }
 
     // Update is called once per frame
@@ -64,7 +66,7 @@ public class PlayerMovement : MonoBehaviour
     {
         MoveCharacter();
         
-        if (Input.GetKey(KeyCode.E) && animator.GetFloat("Speed") == 0f)
+        if (Input.GetKeyDown(KeyCode.E) && animator.GetFloat("Horizontal") == 0f && animator.GetFloat("Vertical") == 0f)
         {
             StartCoroutine(Chop());
         }
@@ -73,6 +75,9 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         // Move the character
-        rb.MovePosition(rb.position + movement * runSpeed * Time.fixedDeltaTime);
+        if(! animator.GetBool("isChop"))
+        {
+            rb.MovePosition(rb.position + movement.normalized * runSpeed * Time.fixedDeltaTime);
+        }
     }
 }
