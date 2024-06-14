@@ -20349,7 +20349,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db3aa1bd3091e5f4ebd8c1bbc0c3ed2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  num_items: 0
+  inventory:
+    slots: []
 --- !u!1 &1293145752
 GameObject:
   m_ObjectHideFlags: 0
@@ -20613,6 +20614,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 941d4294094e606489c5c7bbcd74f5c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 2
 --- !u!1 &1580493927
 GameObject:
   m_ObjectHideFlags: 0
@@ -27290,6 +27292,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 941d4294094e606489c5c7bbcd74f5c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
