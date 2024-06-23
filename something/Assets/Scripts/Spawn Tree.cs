@@ -6,10 +6,15 @@ public class TreeSpawner : MonoBehaviour
 {
     public GameObject treePrefab;  // Assign your tree prefab in the Inspector
     public int numberOfTrees = 10; // Number of trees to spawn
-    public Vector2 areaSize = new Vector2(50, 50); // Size of the area in which to spawn trees
 
     void Start()
     {
+        Debug.Log("TreeSpawner Start method called.");
+        if (treePrefab == null)
+        {
+            Debug.LogError("Tree Prefab is not assigned!");
+            return;
+        }
         SpawnTrees();
     }
 
@@ -18,16 +23,17 @@ public class TreeSpawner : MonoBehaviour
         for (int i = 0; i < numberOfTrees; i++)
         {
             Vector2 randomPosition = GetRandomPosition();
-            Instantiate(treePrefab, randomPosition, Quaternion.identity);
+            Debug.Log(randomPosition);
+            Vector3 spawnPosition = new Vector3(randomPosition.x, randomPosition.y, 0);
+            Instantiate(treePrefab, spawnPosition, Quaternion.identity);
+            Debug.Log($"Tree {i + 1} spawned at position: {spawnPosition}");
         }
     }
 
     Vector2 GetRandomPosition()
     {
-        float x = Random.Range(-areaSize.x / 2, areaSize.x / 2);
-        float y = Random.Range(-areaSize.y / 2, areaSize.y / 2);
-        return new Vector2(x, y) + (Vector2)transform.position;
+        float x = Random.Range(- 14.0f, 30.0f);
+        float y = Random.Range(- 25.0f, 11.0f);
+        return new Vector2(x,y);
     }
 }
-
-
