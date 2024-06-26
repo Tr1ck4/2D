@@ -6,39 +6,31 @@ public class PlayerMovement : MonoBehaviour
 {
     public Animator animator;
     public Rigidbody2D rb;
-
     public float runSpeed = 5f;
-
+    public int chopDamage = 25;
     private Vector2 movement;
+    private TreeHealth targetTree;
 
-    private void Start() {
+    private void Start()
+    {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        // This method is called when the character collides with another collider
-        Debug.Log("Collided with " + collision.gameObject.name);
-        
-        // You can check the tag of the collided object
-        if (collision.gameObject.tag == "Obstacle")
+        if (other.CompareTag("Tree"))
         {
-            // Handle collision with an obstacle
-            Debug.Log("Hit an obstacle!");
+            targetTree = other.GetComponentInParent<TreeHealth>(); // Get the Tree component from the parent
         }
     }
 
-    void OnCollisionStay2D(Collision2D collision)
+    void OnTriggerExit2D(Collider2D other)
     {
-        // This method is called every frame while the character stays in contact with another collider
-        Debug.Log("Staying in collision with " + collision.gameObject.name);
-    }
-
-    void OnCollisionExit2D(Collision2D collision)
-    {
-        // This method is called when the character stops colliding with another collider
-        Debug.Log("Stopped colliding with " + collision.gameObject.name);
+        if (other.CompareTag("Tree"))
+        {
+            targetTree = null;
+        }
     }
 
     IEnumerator Chop()
@@ -46,6 +38,12 @@ public class PlayerMovement : MonoBehaviour
         animator.SetBool("isChop", true);
         animator.Play("chopping");
         yield return new WaitForSeconds(0.4f);
+
+        if (targetTree != null)
+        {
+            targetTree.Chop(chopDamage);
+        }
+
         animator.Play("idle_right");
         animator.SetBool("isChop", false);
     }
@@ -61,12 +59,11 @@ public class PlayerMovement : MonoBehaviour
         animator.SetBool("isWalking", movement.sqrMagnitude > 0f);
     }
 
-    // Update is called once per frame
     void Update()
     {
         MoveCharacter();
-        
-        if (Input.GetKeyDown(KeyCode.E) && animator.GetFloat("Horizontal") == 0f && animator.GetFloat("Vertical") == 0f)
+
+        if (Input.GetKeyDown(KeyCode.E) && animator.GetFloat("Horizontal") == 0f && animator.GetFloat("Vertical") == 0f && !animator.GetBool("isChop"))
         {
             StartCoroutine(Chop());
         }
@@ -74,8 +71,7 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Move the character
-        if(! animator.GetBool("isChop"))
+        if (!animator.GetBool("isChop"))
         {
             rb.MovePosition(rb.position + movement.normalized * runSpeed * Time.fixedDeltaTime);
         }

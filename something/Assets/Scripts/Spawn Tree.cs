@@ -9,10 +9,8 @@ public class TreeSpawner : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("TreeSpawner Start method called.");
         if (treePrefab == null)
         {
-            Debug.LogError("Tree Prefab is not assigned!");
             return;
         }
         SpawnTrees();
@@ -26,7 +24,6 @@ public class TreeSpawner : MonoBehaviour
             Debug.Log(randomPosition);
             Vector3 spawnPosition = new Vector3(randomPosition.x, randomPosition.y, 0);
             Instantiate(treePrefab, spawnPosition, Quaternion.identity);
-            Debug.Log($"Tree {i + 1} spawned at position: {spawnPosition}");
         }
     }
 

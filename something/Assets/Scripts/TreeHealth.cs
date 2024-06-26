@@ -1,24 +1,29 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TreeHealth : MonoBehaviour
 {
-    public int health = 100;
+    public int maxHealth = 100; // Maximum health of the tree
+    private int currentHealth;
 
-    public void TakeDamage(int damage)
+    void Start()
     {
-        health -= damage;
-        if (health <= 0)
+        currentHealth = maxHealth; // Initialize the tree's health
+    }
+
+    public void Chop(int damage)
+    {
+        currentHealth -= damage;
+        Debug.Log($"Tree chopped! Current health: {currentHealth}");
+
+        if (currentHealth <= 0)
         {
-            Die();
+            DestroyTree();
         }
     }
 
-    void Die()
+    private void DestroyTree()
     {
-        // Add logic for tree destruction or falling animation
-        Debug.Log("Tree has died");
-        Destroy(gameObject);
+        Debug.Log("Tree destroyed!");
+        Destroy(gameObject); // Destroy the tree GameObject
     }
 }
