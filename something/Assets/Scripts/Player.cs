@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    static int DEFAULT_INVENTORY_SLOTS = 64;
+    static int DEFAULT_INVENTORY_SLOTS = 44;
     public Inventory inventory;
 
     private void Awake()

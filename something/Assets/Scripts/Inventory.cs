@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class Inventory
 {
-    static int DEFAULT_MAX_COUNT = 64;
+    static int DEFAULT_MAX_COUNT = 44;
 
     [System.Serializable]
     public class Slot
@@ -13,6 +13,8 @@ public class Inventory
         public CollectableType type;
         public int count; // Number of items in slot
         public int maxCount; // Slot's capacity
+
+        public Sprite icon;
 
         public Slot()
         {
@@ -26,14 +28,10 @@ public class Inventory
             return count < maxCount;
         }
 
-        public void AddItem()
+        public void AddItem(Collectable item)
         {
-            this.count++;
-        }
-
-        public void AddNewItemType(CollectableType type)
-        {
-            this.type = type;
+            this.type = item.type;
+            this.icon = item.icon;
             this.count++;
         }
     }
@@ -49,23 +47,22 @@ public class Inventory
         }
     }
 
-    public void Add(CollectableType type)
+    public void Add(Collectable item)
     {
-        // If there is a slot of same type, add to that slot
         foreach (Slot slot in slots)
         {
-            if (slot.type == type && slot.CanAddItem())
+            if (slot.type == item.type && slot.CanAddItem())
             {
-                slot.AddItem();
+                slot.AddItem(item);
                 return;
             }
         }
-        // No slot of the same type, use the first found empty slot
+
         foreach (Slot slot in slots)
         {
             if (slot.type == CollectableType.NONE)
             {
-                slot.AddNewItemType(type);
+                slot.AddItem(item);
                 return;
             }
         }
