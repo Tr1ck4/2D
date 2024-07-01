@@ -29,7 +29,7 @@ public class Inventory_UI : MonoBehaviour
         if (!inventoryPanel.activeSelf)
         {
             inventoryPanel.SetActive(true);
-            Setup();
+            Refresh();
         }
         else
         {
@@ -37,7 +37,7 @@ public class Inventory_UI : MonoBehaviour
         }
     }
 
-    void Setup()
+    void Refresh()
     {
 
         Debug.Log("Debug.Log(slots.Count): " + slots.Count.ToString());
@@ -56,5 +56,11 @@ public class Inventory_UI : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void Remove(int slotIndex)
+    {
+        player.inventory.Remove(slotIndex);
+        Refresh();
     }
 }
