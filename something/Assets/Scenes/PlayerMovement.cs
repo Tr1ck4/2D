@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -11,26 +12,65 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 movement;
     private TreeHealth targetTree;
 
+    private Vector2 targetPosition;
+    private static PlayerMovement instance;
+
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     private void Start()
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Tree"))
         {
             targetTree = other.GetComponentInParent<TreeHealth>(); // Get the Tree component from the parent
         }
+        if (other.CompareTag("ShopArea"))
+        {
+            LoadArea(2, new Vector2(8.5f,-15f));
+        }
+        if (other.CompareTag("OtherArea"))
+        {
+            LoadArea(0, new Vector2(-13f,7f));
+        }
     }
 
-    void OnTriggerExit2D(Collider2D other)
+    private void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("Tree"))
         {
             targetTree = null;
         }
+    }
+
+    public void LoadArea(int index, Vector2 position)
+    {
+        
+        targetPosition = position;
+        StartCoroutine(LoadSceneAndSetPosition(index));
+    }
+
+    private IEnumerator LoadSceneAndSetPosition(int index)
+    {
+        yield return SceneManager.LoadSceneAsync(index);
+        yield return new WaitForEndOfFrame();
+        rb.position = targetPosition;
     }
 
     IEnumerator Chop()
