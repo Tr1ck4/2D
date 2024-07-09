@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe2dcea8613ec7a40b590acf1cab267a, type: 3}
   m_Name: TOMATO_SEED
   m_EditorClassIdentifier: 
-  itemName: 
-  price: 0
-  itemSprite: {fileID: 0}
+  itemName: TOMATO_SEED
+  price: 15
+  itemSprite: {fileID: 146426486, guid: 91921ccada6a1544fa3c3d93711d2f7a, type: 3}
