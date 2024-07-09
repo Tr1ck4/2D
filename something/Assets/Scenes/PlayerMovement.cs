@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
@@ -12,9 +13,10 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 movement;
     private TreeHealth targetTree;
 
-    private Vector2 targetPosition;
-    private static PlayerMovement instance;
+    public GameObject shopPopup; 
 
+    private static PlayerMovement instance;
+    public int money = 0;
 
     private void Awake()
     {
@@ -29,25 +31,49 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public bool BuyItem(int price)
+    {
+        if (money >= price)
+        {
+            money -= price; // Deduct the price from the player's money
+            Debug.Log("Item bought for " + price + " money. Remaining money: " + money);
+            return true; // Purchase successful
+        }
+        else
+        {
+            Debug.Log("Not enough money to buy this item. Required: " + price + ", Current: " + money);
+            return false; // Not enough money to purchase
+        }
+    }
+
     private void Start()
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+
+        if (shopPopup != null)
+        {
+            shopPopup.SetActive(false);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Tree"))
         {
-            targetTree = other.GetComponentInParent<TreeHealth>(); // Get the Tree component from the parent
+            targetTree = other.GetComponentInParent<TreeHealth>();
         }
         if (other.CompareTag("ShopArea"))
         {
-            LoadArea(2, new Vector2(8.5f,-15f));
+            LoadArea(2, new Vector2(8.5f, -15f));
         }
         if (other.CompareTag("OtherArea"))
         {
-            LoadArea(0, new Vector2(-13f,7f));
+            LoadArea(0, new Vector2(-13f, 7f));
+        }
+        if (other.CompareTag("ShopUp"))
+        {
+            OpenShop();
         }
     }
 
@@ -59,12 +85,21 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void OpenShop()
+    {
+        if (shopPopup != null)
+        {
+            shopPopup.SetActive(true);
+        }
+    }
+
     public void LoadArea(int index, Vector2 position)
     {
-        
         targetPosition = position;
         StartCoroutine(LoadSceneAndSetPosition(index));
     }
+
+    private Vector2 targetPosition;
 
     private IEnumerator LoadSceneAndSetPosition(int index)
     {

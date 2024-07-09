@@ -9,13 +9,26 @@ public class Inventory_UI : MonoBehaviour
     public Player player;
 
     public List<Slot_UI> slots = new List<Slot_UI>();
+    private Inventory_UI instance;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     private void Start()
     {
         inventoryPanel.SetActive(false);
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Tab))

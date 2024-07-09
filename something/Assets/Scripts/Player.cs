@@ -12,7 +12,6 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         inventory = new Inventory(DEFAULT_INVENTORY_SLOTS);
-
     }
 
     private void Update()

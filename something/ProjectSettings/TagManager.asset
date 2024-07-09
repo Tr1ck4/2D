@@ -8,6 +8,7 @@ TagManager:
   - ShopArea
   - OutArea
   - OtherArea
+  - ShopUp
   layers:
   - Default
   - TransparentFX
