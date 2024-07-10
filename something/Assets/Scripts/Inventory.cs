@@ -82,6 +82,12 @@ public class Inventory
         }
     }
 
+    public void Add(ItemData itemData)
+    {
+        Item item = new GameObject().AddComponent<Item>();
+        item.data = itemData;
+        Add(item);
+    }
     public void Remove(int slotIndex)
     {
         slots[slotIndex].RemoveItem();

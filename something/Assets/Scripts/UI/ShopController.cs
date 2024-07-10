@@ -12,6 +12,7 @@ public class ShopController : MonoBehaviour
 
     private static ShopController instance;
     private PlayerMovement playerMovement;
+    private Player player;
 
     private void Awake()
     {
@@ -25,6 +26,7 @@ public class ShopController : MonoBehaviour
             Destroy(gameObject);
         }
         playerMovement = FindObjectOfType<PlayerMovement>();
+        player = FindObjectOfType<Player>();
     }
 
     private void Start()
@@ -92,17 +94,18 @@ public class ShopController : MonoBehaviour
             Debug.Log(itemImage.sprite);
 
             Button buyButton = newItem.GetComponentInChildren<Button>();
-            buyButton.onClick.AddListener(() => BuyItem(item.price));
+            buyButton.onClick.AddListener(() => BuyItem(item));
         }
     }
 
-    private void BuyItem(int price)
+    private void BuyItem(ItemData item)
     {
         if (playerMovement != null)
         {
-            bool bought = playerMovement.BuyItem(price);
+            bool bought = playerMovement.BuyItem(item.price);
             if (bought)
             {
+                player.inventory.Add(item);
                 // Perform additional actions after successful purchase (e.g., add item to inventory)
                 Debug.Log("Item purchased successfully!");
                 // Implement further logic as needed
