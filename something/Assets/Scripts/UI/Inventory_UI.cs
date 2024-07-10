@@ -72,6 +72,7 @@ public class Inventory_UI : MonoBehaviour
 
     public void Remove(int slotIndex)
     {
+
         if (player == null)
         {
             Debug.LogError("Player reference is null. Trying to find player again.");
