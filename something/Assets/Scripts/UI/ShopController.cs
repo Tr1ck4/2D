@@ -84,9 +84,12 @@ public class ShopController : MonoBehaviour
                 continue;
             }
 
+            
+
             textComponents[0].text = item.itemName;
             textComponents[1].text = item.price.ToString();
             itemImage.sprite = item.itemSprite;
+            Debug.Log(itemImage.sprite);
 
             Button buyButton = newItem.GetComponentInChildren<Button>();
             buyButton.onClick.AddListener(() => BuyItem(item.price));

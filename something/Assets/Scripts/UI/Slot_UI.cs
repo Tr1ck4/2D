@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using static Inventory;
 
 public class Slot_UI : MonoBehaviour
 {
@@ -12,19 +9,28 @@ public class Slot_UI : MonoBehaviour
 
     public void SetItem(Inventory.Slot slot)
     {
-        if (slot != null)
+        if (slot != null && itemIcon != null && quantityText != null)
         {
             itemIcon.sprite = slot.icon;
-            itemIcon.color = new Color(1, 1, 1, 1); // Transparent when slot is empty
+            itemIcon.color = Color.white; // Ensure the icon is visible
             quantityText.text = slot.count.ToString();
-
+        }
+        else
+        {
+            Debug.LogWarning("Slot or UI components not properly initialized.");
         }
     }
 
     public void SetEmpty()
     {
-        itemIcon.sprite = null;
-        itemIcon.color = new Color(1, 1, 1, 0); // Transparent when slot is empty
-        quantityText.text = "";
+        if (itemIcon != null)
+        {
+            itemIcon.sprite = null;
+            itemIcon.color = Color.clear; // Make the icon transparent
+        }
+        if (quantityText != null)
+        {
+            quantityText.text = "";
+        }
     }
 }

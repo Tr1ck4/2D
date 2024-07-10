@@ -36,7 +36,6 @@ public class TreeSpawner : MonoBehaviour
         for (int i = 0; i < numberOfTrees; i++)
         {
             Vector2 randomPosition = GetRandomPosition();
-            Debug.Log(randomPosition);
             Vector3 spawnPosition = new Vector3(randomPosition.x, randomPosition.y, 0);
             Instantiate(treePrefab, spawnPosition, Quaternion.identity);
         }
