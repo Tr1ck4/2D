@@ -4,6 +4,7 @@ public class TreeHealth : MonoBehaviour
 {
     public int maxHealth = 100; // Maximum health of the tree
     private int currentHealth;
+    public AudioClip chopSound;
 
     void Start()
     {
@@ -12,6 +13,11 @@ public class TreeHealth : MonoBehaviour
 
     public void Chop(int damage)
     {
+        AudioSource audioSource = GetComponent<AudioSource>();
+        if (audioSource != null && chopSound != null)
+        {
+            audioSource.PlayOneShot(chopSound);
+        }
         currentHealth -= damage;
         Debug.Log($"Tree chopped! Current health: {currentHealth}");
 
