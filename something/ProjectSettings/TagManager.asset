@@ -9,6 +9,7 @@ TagManager:
   - OutArea
   - OtherArea
   - ShopUp
+  - Static
   layers:
   - Default
   - TransparentFX
