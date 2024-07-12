@@ -129,6 +129,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   chopSound: {fileID: 8300000, guid: f0b015c5508e8a9418009288c2c95c72, type: 3}
+  logPrefab: {fileID: 4819835078458491231, guid: c22a18c410ebcaf42b376500eeb6245f, type: 3}
 --- !u!50 &2848993518380125679
 Rigidbody2D:
   serializedVersion: 4
