@@ -1,11 +1,9 @@
 fileFormatVersion: 2
-guid: fe2dcea8613ec7a40b590acf1cab267a
+guid: 24a380c2d3e17f84c8840cc2fc5041f2
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences:
-  - itemSprite: {instanceID: 0}
-  - dropClip: {fileID: 7400000, guid: 392782589b4877345aa0eeca261905fb, type: 2}
+  defaultReferences: []
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
