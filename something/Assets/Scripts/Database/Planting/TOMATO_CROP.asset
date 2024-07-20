@@ -12,6 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38179f3ba5187b74784b9bb036bedc61, type: 3}
   m_Name: TOMATO_CROP
   m_EditorClassIdentifier: 
-  cropName: 
-  growthStages: []
-  timeToNextStage: 0
+  cropName: Tomato
+  growthStages:
+  - {fileID: -1890410630, guid: 91921ccada6a1544fa3c3d93711d2f7a, type: 3}
+  - {fileID: -1455006935, guid: 91921ccada6a1544fa3c3d93711d2f7a, type: 3}
+  - {fileID: -1659577630, guid: 91921ccada6a1544fa3c3d93711d2f7a, type: 3}
+  - {fileID: 1486134761, guid: 91921ccada6a1544fa3c3d93711d2f7a, type: 3}
+  - {fileID: 1826440809, guid: 91921ccada6a1544fa3c3d93711d2f7a, type: 3}
+  - {fileID: -1744369613, guid: 91921ccada6a1544fa3c3d93711d2f7a, type: 3}
+  timeToNextStage: 1
