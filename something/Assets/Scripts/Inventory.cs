@@ -1,19 +1,19 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 [System.Serializable]
 public class Inventory
 {
     static int DEFAULT_MAX_COUNT = 44;
-    
+    private string saveFilePath;
+
     [System.Serializable]
     public class Slot
     {
         public string itemName;
         public int count; // Number of items in slot
         public int maxCount; // Slot's capacity
-
         public Sprite icon;
 
         public Slot()
@@ -51,14 +51,16 @@ public class Inventory
     }
 
     public List<Slot> slots = new List<Slot>();
-    
-    public Inventory(int numSlots) 
+
+    public Inventory(int numSlots)
     {
+        saveFilePath = Path.Combine(Application.persistentDataPath, "inventoryData.json");
         for (int i = 0; i < numSlots; i++)
         {
             Slot slot = new Slot();
             slots.Add(slot);
         }
+        Load(); // Load inventory from file if it exists
     }
 
     public void Add(Item item)
@@ -68,6 +70,7 @@ public class Inventory
             if (slot.itemName == item.data.itemName && slot.CanAddItem())
             {
                 slot.AddItem(item);
+                Save(); // Save after adding item
                 return;
             }
         }
@@ -77,6 +80,7 @@ public class Inventory
             if (slot.itemName == "")
             {
                 slot.AddItem(item);
+                Save(); // Save after adding item
                 return;
             }
         }
@@ -88,8 +92,32 @@ public class Inventory
         item.data = itemData;
         Add(item);
     }
+
     public void Remove(int slotIndex)
     {
-        slots[slotIndex].RemoveItem();
+        if (slotIndex >= 0 && slotIndex < slots.Count)
+        {
+            slots[slotIndex].RemoveItem();
+            Save(); // Save after removing item
+        }
+    }
+
+    private void Save()
+    {
+        // Serialize the inventory to JSON
+        string json = JsonUtility.ToJson(this);
+        File.WriteAllText(saveFilePath, json);
+    }
+
+    private void Load()
+    {
+        // Deserialize the inventory from JSON
+        if (File.Exists(saveFilePath))
+        {
+            string json = File.ReadAllText(saveFilePath);
+            Inventory loadedInventory = JsonUtility.FromJson<Inventory>(json);
+            // Copy data from loadedInventory to this instance
+            slots = loadedInventory.slots;
+        }
     }
 }
