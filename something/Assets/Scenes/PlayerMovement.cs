@@ -123,6 +123,17 @@ public class PlayerMovement : MonoBehaviour
         animator.SetBool("isChop", false);
     }
 
+    IEnumerator Water()
+    {
+        animator.SetBool("isWatering", true);
+        animator.Play("watering");
+        yield return new WaitForSeconds(0.4f);
+
+
+        animator.Play("idle_right");
+        animator.SetBool("isWatering", false);
+    }
+
     void MoveCharacter()
     {
         movement.x = Input.GetAxisRaw("Horizontal");
@@ -141,6 +152,11 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E) && animator.GetFloat("Horizontal") == 0f && animator.GetFloat("Vertical") == 0f && !animator.GetBool("isChop"))
         {
             StartCoroutine(Chop());
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space) && animator.GetFloat("Horizontal") == 0f && animator.GetFloat("Vertical") == 0f && !animator.GetBool("isChop"))
+        {
+            StartCoroutine(Water());
         }
     }
 
