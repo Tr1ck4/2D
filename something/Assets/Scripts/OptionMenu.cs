@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
@@ -9,15 +8,25 @@ public class OptionsMenu : MonoBehaviour
     public TMP_Dropdown resolutionDropdown;
     public Slider volumeSlider;
     public GameObject menu;
-    private List<Resolution> resolutions;
-    private AudioSource[] audioSources;
-    private bool isMenuActive = false;
+    private OptionsMenu instance;
 
+    private List<Resolution> resolutions;
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
     void Start()
     {
-        menu.SetActive(isMenuActive);
-
-        // Define the available resolutions
+        menu.SetActive(false);
+        // Manually define the desired resolutions
         resolutions = new List<Resolution>
         {
             new Resolution { width = 1080, height = 720 },
@@ -25,8 +34,8 @@ public class OptionsMenu : MonoBehaviour
             new Resolution { width = 1920, height = 1080 }
         };
 
-        // Initialize resolution dropdown
         resolutionDropdown.ClearOptions();
+
         List<string> options = new List<string>();
         int currentResolutionIndex = 0;
         for (int i = 0; i < resolutions.Count; i++)
@@ -40,83 +49,30 @@ public class OptionsMenu : MonoBehaviour
                 currentResolutionIndex = i;
             }
         }
+
         resolutionDropdown.AddOptions(options);
         resolutionDropdown.value = currentResolutionIndex;
         resolutionDropdown.RefreshShownValue();
 
-        // Initialize volume slider
+        // Set the volume slider to the current volume
         volumeSlider.value = AudioListener.volume;
-        volumeSlider.onValueChanged.AddListener(SetVolume);
-
-        audioSources = FindObjectsOfType<AudioSource>();
-
-        // Load settings from file
-        LoadSettings();
     }
 
     public void SetResolution(int resolutionIndex)
     {
         Resolution resolution = resolutions[resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
-        SaveSettings(); // Save settings when resolution is changed
     }
 
     public void SetVolume(float volume)
     {
         AudioListener.volume = volume;
-        foreach (AudioSource audioSource in audioSources)
-        {
-            audioSource.volume = volume;
-        }
-        SaveSettings(); // Save settings when volume is changed
     }
 
     public void CloseOptions()
     {
-        isMenuActive = !isMenuActive;
-        menu.SetActive(isMenuActive);
+        gameObject.SetActive(false);
     }
-
-    private void SaveSettings()
-    {
-        SettingsData settings = new SettingsData
-        {
-            resolutionIndex = resolutionDropdown.value,
-            volume = volumeSlider.value
-        };
-
-        string json = JsonUtility.ToJson(settings);
-        File.WriteAllText(GetSettingsFilePath(), json);
-    }
-
-    private void LoadSettings()
-    {
-        string path = GetSettingsFilePath();
-        if (File.Exists(path))
-        {
-            string json = File.ReadAllText(path);
-            SettingsData settings = JsonUtility.FromJson<SettingsData>(json);
-
-            resolutionDropdown.value = settings.resolutionIndex;
-            volumeSlider.value = settings.volume;
-
-            // Apply settings
-            SetResolution(settings.resolutionIndex);
-            SetVolume(settings.volume);
-        }
-    }
-
-    private string GetSettingsFilePath()
-    {
-        return Path.Combine(Application.persistentDataPath, "settingsData.json");
-    }
-}
-
-[System.Serializable]
-public class SettingsData
-{
-    public int resolutionIndex;
-    public float volume;
 }
 
 public struct Resolution
@@ -124,3 +80,4 @@ public struct Resolution
     public int width;
     public int height;
 }
+

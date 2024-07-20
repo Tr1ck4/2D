@@ -8,15 +8,15 @@ public class TreeSpawner : MonoBehaviour
     public GameObject treePrefab;  // Assign your tree prefab in the Inspector
     private int numberOfTrees = 35; // Number of trees to spawn
 
-    public static TreeSpawner Instance;
-    private List<Vector3> treePositions = new List<Vector3>();
-    private List<GameObject> spawnedTrees = new List<GameObject>();
+    private static TreeSpawner instance;
+    private List<Vector3> treePositions = new List<Vector3>(); // To store the positions of spawned trees
+    private List<GameObject> spawnedTrees = new List<GameObject>(); // To store the actual tree GameObjects
 
     void Awake()
     {
-        if (Instance == null)
+        if (instance == null)
         {
-            Instance = this;
+            instance = this;
             DontDestroyOnLoad(gameObject);
             Debug.Log("TreeSpawner instance created and set to not destroy on load.");
 
@@ -77,21 +77,22 @@ public class TreeSpawner : MonoBehaviour
         }
 
         int spawnedTreesCount = 0;
-        int attempts = 0;
+        int attempts = 0; // To avoid infinite loops
         while (spawnedTreesCount < numberOfTrees && attempts < numberOfTrees * 10)
         {
             Vector2 randomPosition = GetRandomPosition();
             Vector3 spawnPosition = new Vector3(randomPosition.x, randomPosition.y, 0);
 
+            // Check if the position collides with any "Static" tagged objects
             Collider2D hitCollider = Physics2D.OverlapCircle(spawnPosition, 0.5f);
             if (hitCollider != null && hitCollider.CompareTag("Static"))
             {
                 attempts++;
-                continue;
+                continue; // Skip this position
             }
 
             GameObject tree = Instantiate(treePrefab, spawnPosition, Quaternion.identity);
-            DontDestroyOnLoad(tree);
+            DontDestroyOnLoad(tree); // Make the tree persistent across scenes
             spawnedTrees.Add(tree);
             treePositions.Add(spawnPosition);
             spawnedTreesCount++;
@@ -102,7 +103,7 @@ public class TreeSpawner : MonoBehaviour
             Debug.LogWarning($"Could only spawn {spawnedTreesCount} trees out of {numberOfTrees} due to position constraints.");
         }
 
-        SaveTreeData(); // Call save once after spawning
+        SaveTreeData();
     }
 
     void SpawnTreesFromData()
@@ -110,7 +111,7 @@ public class TreeSpawner : MonoBehaviour
         foreach (Vector3 position in treePositions)
         {
             GameObject tree = Instantiate(treePrefab, position, Quaternion.identity);
-            DontDestroyOnLoad(tree);
+            DontDestroyOnLoad(tree); // Make the tree persistent across scenes
             spawnedTrees.Add(tree);
         }
     }
@@ -122,50 +123,41 @@ public class TreeSpawner : MonoBehaviour
         return new Vector2(x, y);
     }
 
-    public void RemoveTreePosition(Vector3 position)
-    {
-        if (treePositions.Contains(position))
-        {
-            treePositions.Remove(position);
-            SaveTreeData(); // Save data after removing a tree
-            Debug.Log("Tree position removed and data saved.");
-        }
-    }
-
     void SaveTreeData()
+{
+    TreeData data = new TreeData();
+    data.positions = new List<Vector3Serializable>();
+    foreach (Vector3 position in treePositions)
     {
-        Debug.Log("Saving tree data...");
-        TreeData data = new TreeData();
-        data.positions = new List<Vector3Serializable>();
-        foreach (Vector3 position in treePositions)
-        {
-            data.positions.Add(new Vector3Serializable(position));
-        }
-
-        string json = JsonUtility.ToJson(data);
-        File.WriteAllText(GetTreeDataPath(), json);
-        Debug.Log("Tree data saved.");
+        data.positions.Add(new Vector3Serializable(position));
     }
+
+    string json = JsonUtility.ToJson(data);
+    File.WriteAllText(GetTreeDataPath(), json);
+}
+
 
     void LoadTreeData()
+{
+    string path = GetTreeDataPath();
+    if (File.Exists(path))
     {
-        string path = GetTreeDataPath();
-        if (File.Exists(path))
+        string json = File.ReadAllText(path);
+        TreeData data = JsonUtility.FromJson<TreeData>(json);
+        treePositions = new List<Vector3>();
+        foreach (Vector3Serializable position in data.positions)
         {
-            string json = File.ReadAllText(path);
-            TreeData data = JsonUtility.FromJson<TreeData>(json);
-            treePositions = new List<Vector3>();
-            foreach (Vector3Serializable position in data.positions)
-            {
-                treePositions.Add(position.ToVector3());
-            }
+            treePositions.Add(position.ToVector3());
         }
     }
+}
+
 
     private string GetTreeDataPath()
-    {
-        return Path.Combine(Application.persistentDataPath, "treeData.json");
-    }
+{
+    return Path.Combine(Application.persistentDataPath, "treeData.json");
+}
+
 }
 
 [System.Serializable]
