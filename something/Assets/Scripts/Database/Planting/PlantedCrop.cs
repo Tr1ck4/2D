@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlantedCrop : MonoBehaviour
+public class PlantedCrop
 {
     public Crop crop;
     public int currentStage;

@@ -22309,7 +22309,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventoryPanel: {fileID: 1546632181}
-  player: {fileID: 651151707}
+  player: {fileID: 0}
   slots:
   - {fileID: 558124432}
   - {fileID: 725759737}
@@ -24085,7 +24085,6 @@ GameObject:
   - component: {fileID: 651151700}
   - component: {fileID: 651151705}
   - component: {fileID: 651151706}
-  - component: {fileID: 651151707}
   - component: {fileID: 651151709}
   m_Layer: 0
   m_Name: character
@@ -24255,21 +24254,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.070570305, y: 0.019771859}
   m_EdgeRadius: 0
---- !u!114 &651151707
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 651151699}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db3aa1bd3091e5f4ebd8c1bbc0c3ed2b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inventory:
-    slots: []
-  cropDatabase: {fileID: 11400000, guid: b2295a38e6c3912469179b9ec4e2c369, type: 2}
 --- !u!114 &651151708
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24288,6 +24272,9 @@ MonoBehaviour:
   chopDamage: 25
   shopPopup: {fileID: 4366084}
   money: 0
+  inventory:
+    slots: []
+  cropDatabase: {fileID: 11400000, guid: b2295a38e6c3912469179b9ec4e2c369, type: 2}
 --- !u!82 &651151709
 AudioSource:
   m_ObjectHideFlags: 0

@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public SpriteRenderer spriteRenderer;
     public Animator animator;
     public Rigidbody2D rb;
     public float runSpeed = 5f;
@@ -18,6 +20,8 @@ public class PlayerMovement : MonoBehaviour
     private static PlayerMovement instance;
     public int money = 0;
 
+    public CropDatabase cropDatabase;
+
     private void Awake()
     {
         if (instance == null)
@@ -29,6 +33,7 @@ public class PlayerMovement : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
     }
 
     public bool BuyItem(int price)
@@ -50,10 +55,17 @@ public class PlayerMovement : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
 
         if (shopPopup != null)
         {
             shopPopup.SetActive(false);
+        }
+
+        if (cropDatabase == null)
+        {
+            Debug.Log("Player.cropDatabase is null");
+            return;
         }
     }
 
@@ -123,6 +135,16 @@ public class PlayerMovement : MonoBehaviour
         animator.SetBool("isChop", false);
     }
 
+    IEnumerator Water()
+    {
+        animator.SetBool("isWatering", true);
+        animator.Play("watering");
+        yield return new WaitForSeconds(0.4f);
+
+        animator.Play("idle_right");
+        animator.SetBool("isWatering", false);
+    }
+
     void MoveCharacter()
     {
         movement.x = Input.GetAxisRaw("Horizontal");
@@ -142,6 +164,39 @@ public class PlayerMovement : MonoBehaviour
         {
             StartCoroutine(Chop());
         }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            // Debug character's position
+            // Vector3 debugPosition = new Vector3(transform.position.x, transform.position.y, 0);
+            // Debug.Log("Character's real position: " + debugPosition);
+
+            Vector3 playerbotcen = GetPlayerBottomCenter();
+            int plowX = (int)Math.Floor(playerbotcen.x);
+            int plowY = (int)Math.Floor(playerbotcen.y);
+            GetPlayerBottomCenter();
+            Vector3Int position =
+                new Vector3Int(
+                    plowX,
+                    plowY,
+                    0
+                );
+
+
+            if (GameManager.Instance.tileManager.IsPlowable(position)) // Plow dirt
+            {
+                GameManager.Instance.tileManager.SetPlowed(position);
+            }
+            else if (GameManager.Instance.tileManager.IsPlowed(position))
+            {
+                StartCoroutine(Water());
+                GameManager.Instance.tileManager.SetMoisturized(position);
+            }
+            else if (GameManager.Instance.tileManager.IsMoisturized(position)) // Plant seed
+            {
+                GameManager.Instance.tileManager.PlantCrop(position, cropDatabase.crops[1]);
+            }
+        }
     }
 
     void FixedUpdate()
@@ -150,5 +205,12 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.MovePosition(rb.position + movement.normalized * runSpeed * Time.fixedDeltaTime);
         }
+    }
+
+    private Vector3 GetPlayerBottomCenter() // where the Player is standing
+    {
+        var bounds = spriteRenderer.bounds;
+        Vector3 bottomCenter = new Vector3(bounds.center.x, bounds.min.y);
+        return bottomCenter;
     }
 }

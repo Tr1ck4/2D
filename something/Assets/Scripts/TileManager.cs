@@ -11,7 +11,8 @@ public class TileManager : MonoBehaviour
 
     [SerializeField] private Tile hiddenInteractableTile;
 
-    [SerializeField] private Tile interactedTile;
+    [SerializeField] private Tile plowedTile;
+    [SerializeField] private Tile moisturizedTile;
 
     private Dictionary<Vector3Int, PlantedCrop> plantedCrops = new Dictionary<Vector3Int, PlantedCrop>();
 
@@ -30,7 +31,7 @@ public class TileManager : MonoBehaviour
         }
     }
 
-    public bool IsInteractable(Vector3Int position) // actually IsPlowable
+    public bool IsPlowable(Vector3Int position) // actually IsPlowable
     {
         TileBase tile = dirtMap.GetTile(position);
         if (tile != null)
@@ -48,7 +49,7 @@ public class TileManager : MonoBehaviour
         TileBase tile = dirtMap.GetTile(position);
         if (tile != null)
         {
-            if (tile.name == "HoedDirt")
+            if (tile.name == "PlowedDirt")
             {
                 return true;
             }
@@ -56,11 +57,31 @@ public class TileManager : MonoBehaviour
         return false;
     }
 
-    public void SetInteracted(Vector3Int position)
+    public bool IsMoisturized(Vector3Int position)
+    {
+        TileBase tile = dirtMap.GetTile(position);
+        if (tile != null)
+        {
+            if (tile.name == "MoisturizedDirt")
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void SetPlowed(Vector3Int position)
     {
         Color colorFilter = new Color(255, 255, 255, 255);
         dirtMap.SetColor(position, colorFilter);
-        dirtMap.SetTile(position, interactedTile);
+        dirtMap.SetTile(position, plowedTile);
+    }
+
+    public void SetMoisturized(Vector3Int position)
+    {
+        Color colorFilter = new Color(255, 255, 255, 255);
+        dirtMap.SetColor(position, colorFilter);
+        dirtMap.SetTile(position, moisturizedTile);
     }
 
     public void PlantCrop(Vector3Int position, Crop crop)
