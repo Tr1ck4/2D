@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     public TileManager tileManager;
+    public TimeManager timeManager;
 
     private void Awake()
     {
@@ -27,5 +28,19 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
 
         tileManager = GetComponent<TileManager>();
+        timeManager = GetComponent<TimeManager>();
+    }
+
+    private void Start()
+    {
+        if (timeManager != null)
+        {
+            timeManager.OnDayPassed += OnDayPassed;
+        }
+    }
+
+    private void OnDayPassed()
+    {
+        tileManager.UpdateGrowth(timeManager.dayLength);
     }
 }

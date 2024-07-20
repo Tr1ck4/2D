@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[CreateAssetMenu(fileName = "Crop", menuName = "FarmGame/Crop")]
+[CreateAssetMenu(fileName = "Crop", menuName = "ScriptableObjects/Crop")]
 public class Crop : ScriptableObject
 {
     public string cropName;

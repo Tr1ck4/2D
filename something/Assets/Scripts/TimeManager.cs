@@ -14,6 +14,7 @@ public class TimeManager : MonoBehaviour
         timeElapsed += Time.deltaTime;
         if (timeElapsed >= dayLength)
         {
+            Debug.Log("A day passed");
             timeElapsed = 0f;
             OnDayPassed?.Invoke();
         }

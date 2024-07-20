@@ -9,17 +9,29 @@ public class Player : MonoBehaviour
     static int DEFAULT_INVENTORY_SLOTS = 44;
     public Inventory inventory;
 
+    public CropDatabase cropDatabase; 
+
     private void Awake()
     {
         inventory = new Inventory(DEFAULT_INVENTORY_SLOTS);
+    }
+
+    private void Start()
+    {
+        if (cropDatabase == null)
+        {
+            Debug.Log("Player.cropDatabase is null");
+            return;
+        }
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Vector3 debugPosition = new Vector3(transform.position.x, transform.position.y, 0);
-            Debug.Log("Character's real position: " + debugPosition);
+            // Debug character's position
+            // Vector3 debugPosition = new Vector3(transform.position.x, transform.position.y, 0);
+            // Debug.Log("Character's real position: " + debugPosition);
 
             Vector3 playerbotcen = GetPlayerBottomCenter();
             int plowX = (int)Math.Floor(playerbotcen.x);
@@ -31,11 +43,17 @@ public class Player : MonoBehaviour
                     plowY,
                     0
                 );
-            Debug.Log("Plowed position: " + position);
-            if (GameManager.Instance.tileManager.IsInteractable(position))
+
+            
+            if (GameManager.Instance.tileManager.IsInteractable(position)) // Plow dirt
             {
-                Debug.Log("on farmland");
+                Debug.Log("Plowed " +  position);
                 GameManager.Instance.tileManager.SetInteracted(position);
+            }
+            else if (GameManager.Instance.tileManager.IsPlowed(position)) // Plant seed
+            {
+                Debug.Log("Trying to plant " + position);
+                GameManager.Instance.tileManager.PlantCrop(position, cropDatabase.crops[0]);
             }
         }
     }
