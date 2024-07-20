@@ -51,6 +51,10 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void AddMoney(int price){
+        money += price;
+    }
+
     private void Start()
     {
         animator = GetComponent<Animator>();

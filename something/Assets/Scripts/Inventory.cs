@@ -60,17 +60,30 @@ public class Inventory
             Slot slot = new Slot();
             slots.Add(slot);
         }
-        Load(); // Load inventory from file if it exists
+        Load();
+    }
+
+    public int FindSlotIndexByItemName(string itemName)
+    {
+        for (int i = 0; i < slots.Count; i++)
+        {
+            if (slots[i].itemName == itemName)
+            {
+                return i;
+            }
+        }
+        return -1;
     }
 
     public void Add(Item item)
     {
+        //Debug.Log(item.itemName);
         foreach (Slot slot in slots)
         {
             if (slot.itemName == item.data.itemName && slot.CanAddItem())
             {
                 slot.AddItem(item);
-                Save(); // Save after adding item
+                Save();
                 return;
             }
         }
@@ -80,7 +93,7 @@ public class Inventory
             if (slot.itemName == "")
             {
                 slot.AddItem(item);
-                Save(); // Save after adding item
+                Save();
                 return;
             }
         }
@@ -98,25 +111,22 @@ public class Inventory
         if (slotIndex >= 0 && slotIndex < slots.Count)
         {
             slots[slotIndex].RemoveItem();
-            Save(); // Save after removing item
+            Save();
         }
     }
 
     private void Save()
     {
-        // Serialize the inventory to JSON
         string json = JsonUtility.ToJson(this);
         File.WriteAllText(saveFilePath, json);
     }
 
     private void Load()
     {
-        // Deserialize the inventory from JSON
         if (File.Exists(saveFilePath))
         {
             string json = File.ReadAllText(saveFilePath);
             Inventory loadedInventory = JsonUtility.FromJson<Inventory>(json);
-            // Copy data from loadedInventory to this instance
             slots = loadedInventory.slots;
         }
     }

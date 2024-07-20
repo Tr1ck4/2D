@@ -1063,7 +1063,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c712ce608df05942bc08f6b06257ec0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  optionsPanel: {fileID: 0}
+  optionsPanel: {fileID: 1260158328}
 --- !u!4 &696644045
 Transform:
   m_ObjectHideFlags: 0
