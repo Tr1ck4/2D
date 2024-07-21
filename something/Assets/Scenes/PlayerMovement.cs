@@ -191,14 +191,20 @@ public class PlayerMovement : MonoBehaviour
             {
                 GameManager.Instance.tileManager.SetPlowed(position);
             }
-            else if (GameManager.Instance.tileManager.IsPlowed(position))
+            else if (GameManager.Instance.tileManager.IsPlowed(position)) // Water dirt tile
             {
                 StartCoroutine(Water());
                 GameManager.Instance.tileManager.SetMoisturized(position);
             }
-            else if (GameManager.Instance.tileManager.IsMoisturized(position)) // Plant seed
+            else if (GameManager.Instance.tileManager.IsMoisturized(position) &&
+                !GameManager.Instance.tileManager.HasCrop(position)) // Plant seed
             {
                 GameManager.Instance.tileManager.PlantCrop(position, cropDatabase.crops[1]);
+            }
+            else if (GameManager.Instance.tileManager.IsHarvestable(position)) // Harvest
+            {
+                Debug.Log("Harvest pressed");
+                GameManager.Instance.tileManager.Harvest(position);
             }
         }
     }

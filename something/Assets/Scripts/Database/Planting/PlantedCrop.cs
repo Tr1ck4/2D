@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class PlantedCrop
 {
@@ -27,6 +28,11 @@ public class PlantedCrop
     public Sprite GetCurrentSprite()
     {
         return crop.growthStages[currentStage];
+    }
+
+    public bool IsHarvestable()
+    {
+        return (currentStage >=  crop.growthStages.Length - 1);
     }
 }
 

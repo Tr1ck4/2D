@@ -9,4 +9,5 @@ public class Crop : ScriptableObject
     public string cropName;
     public Sprite[] growthStages; // Array of sprites for each growth stage
     public float timeToNextStage; // Time to progress to the next stage
+    public GameObject harvestDropPrefab; // item dropped when harvested at final growth stage
 }
