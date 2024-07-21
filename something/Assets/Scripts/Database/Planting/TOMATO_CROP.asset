@@ -21,3 +21,4 @@ MonoBehaviour:
   - {fileID: 1826440809, guid: 91921ccada6a1544fa3c3d93711d2f7a, type: 3}
   - {fileID: -1744369613, guid: 91921ccada6a1544fa3c3d93711d2f7a, type: 3}
   timeToNextStage: 1
+  harvestDropPrefab: {fileID: 4819835078458491231, guid: c6d67435538a63248953f3f0b79afc74, type: 3}
