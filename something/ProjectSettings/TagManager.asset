@@ -10,6 +10,8 @@ TagManager:
   - OtherArea
   - ShopUp
   - Static
+  - DirtMap
+  - CropMap
   layers:
   - Default
   - TransparentFX

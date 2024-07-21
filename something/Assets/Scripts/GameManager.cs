@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -29,6 +30,7 @@ public class GameManager : MonoBehaviour
 
         tileManager = GetComponent<TileManager>();
         timeManager = GetComponent<TimeManager>();
+
     }
 
     private void Start()
@@ -37,6 +39,7 @@ public class GameManager : MonoBehaviour
         {
             timeManager.OnDayPassed += OnDayPassed;
         }
+
     }
 
     private void OnDayPassed()

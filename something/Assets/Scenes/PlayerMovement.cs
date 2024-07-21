@@ -119,6 +119,7 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator LoadSceneAndSetPosition(int index)
     {
+        Debug.Log("Going to scene: " + index);
         yield return SceneManager.LoadSceneAsync(index);
         yield return new WaitForEndOfFrame();
         rb.position = targetPosition;

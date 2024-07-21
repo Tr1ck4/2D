@@ -2,12 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 
 public class TileManager : MonoBehaviour
 {
+    public static TileManager Instance { get; private set; }
+
     [SerializeField] private Tilemap dirtMap; // serialized to access from inspector
     [SerializeField] private Tilemap cropMap;
+
+    private GameObject tilemapRoot;
 
     [SerializeField] private Tile hiddenInteractableTile;
 
@@ -18,8 +23,29 @@ public class TileManager : MonoBehaviour
 
 
     // Start is called before the first frame update
+    void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+
+        InitializeTilemaps();
+    }
+
     void Start()
     {
+        InitializeTilemaps();
+    }
+
+    private void InitializeTilemaps()
+    {
+
         foreach (var position in dirtMap.cellBounds.allPositionsWithin)
         {
             TileBase tile = dirtMap.GetTile(position);
