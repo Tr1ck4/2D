@@ -34,6 +34,7 @@ public class PlayerMovement : MonoBehaviour
             Destroy(gameObject);
         }
 
+        LoadMoney(); // Load money when the game starts
     }
 
     public bool BuyItem(int price)
@@ -42,6 +43,7 @@ public class PlayerMovement : MonoBehaviour
         {
             money -= price; // Deduct the price from the player's money
             Debug.Log("Item bought for " + price + " money. Remaining money: " + money);
+            SaveMoney(); // Save money after purchase
             return true; // Purchase successful
         }
         else
@@ -51,8 +53,24 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void AddMoney(int price){
+    public void AddMoney(int price)
+    {
         money += price;
+        SaveMoney(); // Save money after adding
+    }
+
+    private void SaveMoney()
+    {
+        PlayerPrefs.SetInt("PlayerMoney", money);
+        PlayerPrefs.Save();
+    }
+
+    private void LoadMoney()
+    {
+        if (PlayerPrefs.HasKey("PlayerMoney"))
+        {
+            money = PlayerPrefs.GetInt("PlayerMoney");
+        }
     }
 
     private void Start()
