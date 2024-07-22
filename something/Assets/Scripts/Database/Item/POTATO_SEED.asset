@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe2dcea8613ec7a40b590acf1cab267a, type: 3}
   m_Name: POTATO_SEED
   m_EditorClassIdentifier: 
-  itemName: POTATO_SEED
+  itemName: Potato seed
   price: 20
   itemSprite: {fileID: 810767036, guid: 91921ccada6a1544fa3c3d93711d2f7a, type: 3}
   dropClip: {fileID: 7400000, guid: 392782589b4877345aa0eeca261905fb, type: 2}

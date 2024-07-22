@@ -43,6 +43,7 @@ public class OptionsMenu : MonoBehaviour
         resolutionDropdown.AddOptions(options);
         resolutionDropdown.value = currentResolutionIndex;
         resolutionDropdown.RefreshShownValue();
+        resolutionDropdown.onValueChanged.AddListener(SetResolution); // Add listener for dropdown changes
 
         // Initialize volume slider
         volumeSlider.value = AudioListener.volume;
@@ -57,7 +58,7 @@ public class OptionsMenu : MonoBehaviour
     public void SetResolution(int resolutionIndex)
     {
         Resolution resolution = resolutions[resolutionIndex];
-        Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
+        Screen.SetResolution(resolution.width, resolution.height, FullScreenMode.Windowed); // Ensure it's windowed
         SaveSettings(); // Save settings when resolution is changed
     }
 
@@ -71,7 +72,7 @@ public class OptionsMenu : MonoBehaviour
         SaveSettings(); // Save settings when volume is changed
     }
 
-    public void CloseOptions()
+    public void ToggleOptionsMenu()
     {
         isMenuActive = !isMenuActive;
         menu.SetActive(isMenuActive);

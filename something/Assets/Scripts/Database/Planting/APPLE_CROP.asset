@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38179f3ba5187b74784b9bb036bedc61, type: 3}
+  m_Name: APPLE_CROP
+  m_EditorClassIdentifier: 
+  cropName: Apple
+  growthStages:
+  - {fileID: -277202010, guid: ef3e1ca863e9af940aa0249c440bd346, type: 3}
+  - {fileID: -1579720981, guid: ef3e1ca863e9af940aa0249c440bd346, type: 3}
+  - {fileID: -588452950, guid: ef3e1ca863e9af940aa0249c440bd346, type: 3}
+  - {fileID: -1093343173, guid: ef3e1ca863e9af940aa0249c440bd346, type: 3}
+  - {fileID: 1792367746, guid: ef3e1ca863e9af940aa0249c440bd346, type: 3}
+  - {fileID: 1364756786, guid: ef3e1ca863e9af940aa0249c440bd346, type: 3}
+  - {fileID: -861604203, guid: ef3e1ca863e9af940aa0249c440bd346, type: 3}
+  - {fileID: 1154080919, guid: ef3e1ca863e9af940aa0249c440bd346, type: 3}
+  - {fileID: -477697242, guid: ef3e1ca863e9af940aa0249c440bd346, type: 3}
+  timeToNextStage: 2
+  harvestDropPrefab: {fileID: 0}
