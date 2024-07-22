@@ -23238,7 +23238,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c7e1ad7e2a8c824d8c6f3b391654b01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 0}
+  spriteRenderer: {fileID: 651151701}
   animator: {fileID: 651151700}
   rb: {fileID: 651151705}
   runSpeed: 5
@@ -23943,7 +23943,6 @@ GameObject:
   - component: {fileID: 889437509}
   - component: {fileID: 889437512}
   - component: {fileID: 889437513}
-  - component: {fileID: 889437514}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -23980,8 +23979,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 626eeca083174a14ba0f36b7fbb7b62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileManager: {fileID: 0}
-  timeManager: {fileID: 0}
+  tileManager: {fileID: 889437509}
+  timeManager: {fileID: 889437513}
+  cropDatabase: {fileID: 11400000, guid: b2295a38e6c3912469179b9ec4e2c369, type: 2}
 --- !u!4 &889437511
 Transform:
   m_ObjectHideFlags: 0
@@ -24024,20 +24024,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dayLength: 1
---- !u!114 &889437514
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 889437508}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a86c23cb551f2954484b9b8d279118b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dirtMap: {fileID: 0}
-  cropMap: {fileID: 0}
 --- !u!224 &918735470 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1857040207874489615, guid: e54a815039466b042af1cfe6bacae0c2, type: 3}

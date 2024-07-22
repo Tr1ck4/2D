@@ -1,28 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using System.IO;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 
 public class TileManager : MonoBehaviour
 {
     public static TileManager Instance { get; private set; }
 
-    [SerializeField] private Tilemap dirtMap; // serialized to access from inspector
+    [SerializeField] private Tilemap dirtMap; // Serialized to access from inspector
     [SerializeField] private Tilemap cropMap;
-
-    private GameObject tilemapRoot;
-
     [SerializeField] private Tile hiddenInteractableTile;
-
     [SerializeField] private Tile plowedTile;
     [SerializeField] private Tile moisturizedTile;
 
     private Dictionary<Vector3Int, PlantedCrop> plantedCrops = new Dictionary<Vector3Int, PlantedCrop>();
 
-
-    // Start is called before the first frame update
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -45,7 +38,6 @@ public class TileManager : MonoBehaviour
 
     private void InitializeTilemaps()
     {
-
         foreach (var position in dirtMap.cellBounds.allPositionsWithin)
         {
             TileBase tile = dirtMap.GetTile(position);
@@ -57,71 +49,36 @@ public class TileManager : MonoBehaviour
         }
     }
 
-    public bool IsPlowable(Vector3Int position) // actually IsPlowable
+    public bool IsPlowable(Vector3Int position)
     {
         TileBase tile = dirtMap.GetTile(position);
-        if (tile != null)
-        {
-            if (tile.name == "Interactable")
-            {
-                return true;
-            }
-        }
-        return false;
+        return tile != null && tile.name == "Interactable";
     }
 
     public bool IsPlowed(Vector3Int position)
     {
         TileBase tile = dirtMap.GetTile(position);
-        if (tile != null)
-        {
-            if (tile.name == "PlowedDirt")
-            {
-                return true;
-            }
-        }
-        return false;
+        return tile != null && tile.name == "PlowedDirt";
     }
 
     public bool IsMoisturized(Vector3Int position)
     {
         TileBase tile = dirtMap.GetTile(position);
-        if (tile != null)
-        {
-            if (tile.name == "MoisturizedDirt")
-            {
-                return true;
-            }
-        }
-        return false;
+        return tile != null && tile.name == "MoisturizedDirt";
     }
 
-    public bool HasCrop(Vector3Int position) // Checks if a tile has crop planted
+    public bool HasCrop(Vector3Int position)
     {
         return plantedCrops.ContainsKey(position);
     }
 
     public bool IsHarvestable(Vector3Int position)
     {
-        Debug.Log("IsHarvestable() called");
-        if (plantedCrops.ContainsKey(position))
+        if (plantedCrops.TryGetValue(position, out var plantedCrop))
         {
-            if (plantedCrops[position].IsHarvestable())
-            {
-                Debug.Log("Crop is READY");
-                return true;
-            }
-            else
-            {
-                Debug.Log("Crop is not harvestable");
-                return false;
-            }
+            return plantedCrop.IsHarvestable();
         }
-        else
-        {
-            Debug.Log("No crop detected");
-            return false;
-        }
+        return false;
     }
 
     public void SetNormal(Vector3Int position)
@@ -152,66 +109,36 @@ public class TileManager : MonoBehaviour
 
     public void Harvest(Vector3Int position)
     {
-
-        if (plantedCrops.ContainsKey(position))
+        if (plantedCrops.TryGetValue(position, out var plantedCrop))
         {
-            Debug.Log("Detected crop:" + plantedCrops[position].crop.name);
-            SpawnHarvestedItem(position);
-
-            plantedCrops.Remove(position);
-            SetNormal(position);
+            if (plantedCrop.IsHarvestable())
+            {
+                SpawnHarvestedItem(position, plantedCrop.crop);
+                plantedCrops.Remove(position);
+                SetNormal(position);
+            }
         }
     }
 
-    public void SpawnHarvestedItem(Vector3Int position) // Drop item "vegie" when harvesting
+    public void SpawnHarvestedItem(Vector3Int position, Crop crop)
     {
-        if (plantedCrops[position].crop.harvestDropPrefab != null)
+        if (crop.harvestDropPrefab != null)
         {
-            GameObject vegie = Instantiate(plantedCrops[position].crop.harvestDropPrefab, position, Quaternion.identity);
-
-            Animator vegAnimator = vegie.GetComponent<Animator>();
-            Item vegItem = vegie.GetComponent<Item>();
-
-            if (vegie != null && vegItem != null && vegItem.data != null && vegItem.data.dropClip != null)
-            {
-                ModifyAnimationClip(vegItem.data.dropClip, vegie.transform.position);
-                vegAnimator.Play(vegItem.data.dropClip.name);
-            }
+            Vector3 spawnPosition = dirtMap.CellToWorld(position) + new Vector3(0.5f, 0.5f, 0);
+            Instantiate(crop.harvestDropPrefab, spawnPosition, Quaternion.identity);
         }
         else
         {
-            Debug.LogWarning("harvestDropPrefab is not assigned.");
+            Debug.LogWarning("harvestDropPrefab is not assigned for " + crop.cropName);
         }
     }
 
-    private void ModifyAnimationClip(AnimationClip clip, Vector3 startPosition)
+    private void UpdateTileAppearance(Vector3Int position, PlantedCrop plantedCrop)
     {
-        Keyframe[] posX = {
-            new Keyframe(0, startPosition.x),
-            new Keyframe(0.5f, startPosition.x + 0.5f),
-            new Keyframe(1, startPosition.x + 1f)
-        };
-        Keyframe[] posY = {
-            new Keyframe(0, startPosition.y),
-            new Keyframe(0.5f, startPosition.y + 0.3f),
-            new Keyframe(1, startPosition.y - 0.8f)
-        };
-        Keyframe[] posZ = {
-            new Keyframe(0, startPosition.z),
-            new Keyframe(0.5f, startPosition.z),
-            new Keyframe(1, startPosition.z)
-        };
-
-        AnimationCurve curveX = new AnimationCurve(posX);
-        AnimationCurve curveY = new AnimationCurve(posY);
-        AnimationCurve curveZ = new AnimationCurve(posZ);
-
-        clip.ClearCurves();
-        clip.SetCurve("", typeof(UnityEngine.Transform), "localPosition.x", curveX);
-        clip.SetCurve("", typeof(UnityEngine.Transform), "localPosition.y", curveY);
-        clip.SetCurve("", typeof(UnityEngine.Transform), "localPosition.z", curveZ);
-
-        Debug.Log("Animation clip modified.");
+        Sprite cropSprite = plantedCrop.GetCurrentSprite();
+        Tile cropTile = ScriptableObject.CreateInstance<Tile>();
+        cropTile.sprite = cropSprite;
+        cropMap.SetTile(position, cropTile);
     }
 
     public void UpdateGrowth(float deltaTime)
@@ -223,11 +150,126 @@ public class TileManager : MonoBehaviour
         }
     }
 
-    private void UpdateTileAppearance(Vector3Int position, PlantedCrop plantedCrop)
+    // Save and Load functionality
+    [System.Serializable]
+    public class TileState
     {
-        Sprite cropSprite = plantedCrop.GetCurrentSprite();
-        Tile cropTile = ScriptableObject.CreateInstance<Tile>();
-        cropTile.sprite = cropSprite;
-        cropMap.SetTile(position, cropTile);
+        public Vector3Int position;
+        public bool isPlowed;
+        public bool isMoisturized;
+    }
+
+    [System.Serializable]
+    public class PlantedCropState
+    {
+        public Vector3Int position;
+        public string cropName;
+        public int currentStage;
+        public float growthProgress;
+    }
+
+    [System.Serializable]
+    public class GameState
+    {
+        public List<TileState> tileStates;
+        public List<PlantedCropState> cropStates;
+    }
+
+    private string GetSaveFilePath()
+    {
+        return Path.Combine(Application.persistentDataPath, "gameSave.json");
+    }
+
+    public void SaveGame()
+    {
+        GameState state = new GameState();
+        state.tileStates = new List<TileState>();
+        state.cropStates = new List<PlantedCropState>();
+
+        foreach (var position in dirtMap.cellBounds.allPositionsWithin)
+        {
+            TileBase tile = dirtMap.GetTile(position);
+            if (tile != null && (tile == plowedTile || tile == moisturizedTile))
+            {
+                TileState tileState = new TileState
+                {
+                    position = position,
+                    isPlowed = tile == plowedTile,
+                    isMoisturized = tile == moisturizedTile
+                };
+                state.tileStates.Add(tileState);
+            }
+        }
+
+        foreach (var kvp in plantedCrops)
+        {
+            PlantedCropState cropState = new PlantedCropState
+            {
+                position = kvp.Key,
+                cropName = kvp.Value.crop.cropName,
+                currentStage = kvp.Value.currentStage,
+                growthProgress = kvp.Value.timeToNextStage
+            };
+            state.cropStates.Add(cropState);
+        }
+
+        string json = JsonUtility.ToJson(state, true);
+        File.WriteAllText(GetSaveFilePath(), json);
+        Debug.Log("Game saved to " + GetSaveFilePath());
+    }
+
+    public void LoadGame()
+    {
+        string filePath = GetSaveFilePath();
+        if (File.Exists(filePath))
+        {
+            string json = File.ReadAllText(filePath);
+            GameState state = JsonUtility.FromJson<GameState>(json);
+
+            foreach (var tileState in state.tileStates)
+            {
+                if (tileState.isPlowed)
+                {
+                    SetPlowed(tileState.position);
+                }
+                else if (tileState.isMoisturized)
+                {
+                    SetMoisturized(tileState.position);
+                }
+            }
+
+            foreach (var cropState in state.cropStates)
+            {
+                Crop crop = FindCropByName(cropState.cropName);
+                if (crop != null)
+                {
+                    PlantedCrop plantedCrop = new PlantedCrop(crop)
+                    {
+                        currentStage = cropState.currentStage,
+                        timeToNextStage = cropState.growthProgress
+                    };
+                    plantedCrops[cropState.position] = plantedCrop;
+                    UpdateTileAppearance(cropState.position, plantedCrop);
+                }
+            }
+
+            Debug.Log("Game loaded from " + filePath);
+        }
+        else
+        {
+            Debug.LogWarning("Save file not found at " + filePath);
+        }
+    }
+
+    private Crop FindCropByName(string cropName)
+    {
+        foreach (var crop in GameManager.Instance.cropDatabase.crops)
+        {
+            if (crop.cropName == cropName)
+            {
+                return crop;
+            }
+        }
+        return null;
     }
 }

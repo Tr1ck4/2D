@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
 
     public TileManager tileManager;
     public TimeManager timeManager;
+    public CropDatabase cropDatabase;
 
     private void Awake()
     {
@@ -39,11 +40,18 @@ public class GameManager : MonoBehaviour
         {
             timeManager.OnDayPassed += OnDayPassed;
         }
+        if (tileManager != null){
+            tileManager.LoadGame();
+        }
 
     }
 
     private void OnDayPassed()
     {
         tileManager.UpdateGrowth(timeManager.dayLength);
+    }
+
+    void OnApplicationQuit() {
+        tileManager.SaveGame();
     }
 }
