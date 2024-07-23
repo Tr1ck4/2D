@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe2dcea8613ec7a40b590acf1cab267a, type: 3}
   m_Name: LOG
   m_EditorClassIdentifier: 
-  itemName: LOG
+  itemName: Log
   price: 10
   itemSprite: {fileID: 21300000, guid: 7130594f7f3a12c499e0a1da32e54f81, type: 3}
   dropClip: {fileID: 7400000, guid: 392782589b4877345aa0eeca261905fb, type: 2}

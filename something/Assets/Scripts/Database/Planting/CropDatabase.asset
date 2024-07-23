@@ -15,3 +15,5 @@ MonoBehaviour:
   crops:
   - {fileID: 11400000, guid: 2dde2c5d63e504246ae8d154a0bd8850, type: 2}
   - {fileID: 11400000, guid: 156b02ad440d6684baf73a1c1659552f, type: 2}
+  - {fileID: 11400000, guid: 6a3c67d88554e3041a5663e94ffa9134, type: 2}
+  - {fileID: 11400000, guid: 1022dc1d6331b4b47ba2a9dd31aead84, type: 2}

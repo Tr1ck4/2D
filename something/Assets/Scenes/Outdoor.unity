@@ -20376,7 +20376,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventoryPanel: {fileID: 1546632181}
-  player: {fileID: 0}
+  player: {fileID: 651151709}
   slots:
   - {fileID: 0}
   - {fileID: 0}

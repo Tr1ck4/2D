@@ -2714,10 +2714,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1260158334}
-        m_TargetAssemblyTypeName: OptionsMenu, Assembly-CSharp
-        m_MethodName: CloseOptions
-        m_Mode: 1
+      - m_Target: {fileID: 1260158328}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -2945,7 +2945,7 @@ GameObject:
   - component: {fileID: 1708027307}
   - component: {fileID: 1708027309}
   m_Layer: 0
-  m_Name: AudioSOurce
+  m_Name: AudioSource
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
