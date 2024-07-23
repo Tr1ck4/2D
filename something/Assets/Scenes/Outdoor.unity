@@ -21030,12 +21030,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 553055947}
+  m_Father: {fileID: 1546632182}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -26.04309, y: -8.980347}
+  m_SizeDelta: {x: 695.22363, y: 657.6634}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &343204702
 MonoBehaviour:
@@ -22613,7 +22613,6 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 343204701}
   - {fileID: 299035772}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -27744,6 +27743,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 343204701}
   - {fileID: 1058683399}
   - {fileID: 1434983135}
   - {fileID: 1002424579}
@@ -29916,6 +29916,7 @@ GameObject:
   - component: {fileID: 1820258675}
   - component: {fileID: 1820258677}
   - component: {fileID: 1820258676}
+  - component: {fileID: 1820258679}
   m_Layer: 0
   m_Name: CropOverlayFarmland
   m_TagString: CropMap

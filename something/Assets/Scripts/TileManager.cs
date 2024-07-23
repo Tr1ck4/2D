@@ -124,13 +124,48 @@ public class TileManager : MonoBehaviour
     {
         if (crop.harvestDropPrefab != null)
         {
-            Vector3 spawnPosition = dirtMap.CellToWorld(position) + new Vector3(0.5f, 0.5f, 0);
-            Instantiate(crop.harvestDropPrefab, spawnPosition, Quaternion.identity);
+            Vector3 spawnPosition = new Vector3(position.x, position.y, position.z);
+            GameObject harvestedItem = Instantiate(crop.harvestDropPrefab, spawnPosition, Quaternion.identity);
+
+            Animator itemAnimator = harvestedItem.GetComponent<Animator>();
+            Item itemComponent = harvestedItem.GetComponent<Item>();
+
+            if (itemAnimator != null)
+            {
+                ModifyAnimationClip(itemComponent.data.dropClip, harvestedItem.transform.position);
+                // itemAnimator.Play(itemComponent.data.dropClip.name);
+            }
         }
-        else
-        {
-            Debug.LogWarning("harvestDropPrefab is not assigned for " + crop.cropName);
-        }
+    }
+
+    private void ModifyAnimationClip(AnimationClip clip, Vector3 startPosition)
+    {
+        Keyframe[] posX = {
+            new Keyframe(0, startPosition.x),
+            new Keyframe(0.5f, startPosition.x + 0.5f),
+            new Keyframe(1, startPosition.x + 1f)
+        };
+        Keyframe[] posY = {
+            new Keyframe(0, startPosition.y),
+            new Keyframe(0.5f, startPosition.y + 0.3f),
+            new Keyframe(1, startPosition.y - 0.8f)
+        };
+        Keyframe[] posZ = {
+            new Keyframe(0, startPosition.z),
+            new Keyframe(0.5f, startPosition.z),
+            new Keyframe(1, startPosition.z)
+        };
+
+        AnimationCurve curveX = new AnimationCurve(posX);
+        AnimationCurve curveY = new AnimationCurve(posY);
+        AnimationCurve curveZ = new AnimationCurve(posZ);
+
+        clip.ClearCurves();
+        clip.SetCurve("", typeof(Transform), "localPosition.x", curveX);
+        clip.SetCurve("", typeof(Transform), "localPosition.y", curveY);
+        clip.SetCurve("", typeof(Transform), "localPosition.z", curveZ);
+
+        Debug.Log("Animation clip modified.");
     }
 
     private void UpdateTileAppearance(Vector3Int position, PlantedCrop plantedCrop)
