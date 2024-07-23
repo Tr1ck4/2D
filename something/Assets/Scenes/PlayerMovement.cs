@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     public int chopDamage = 25;
     private Vector2 movement;
     private TreeHealth targetTree;
+    private Vector2 targetPosition;
 
     public GameObject shopPopup; 
 
@@ -103,7 +104,7 @@ public class PlayerMovement : MonoBehaviour
         }
         if (other.CompareTag("OtherArea"))
         {
-            LoadArea(0, new Vector2(-13f, 7f));
+            LoadArea(1, new Vector2(-13f, 7f));
         }
         if (other.CompareTag("ShopUp"))
         {
@@ -133,7 +134,7 @@ public class PlayerMovement : MonoBehaviour
         StartCoroutine(LoadSceneAndSetPosition(index));
     }
 
-    private Vector2 targetPosition;
+    
 
     private IEnumerator LoadSceneAndSetPosition(int index)
     {
