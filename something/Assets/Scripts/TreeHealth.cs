@@ -61,7 +61,7 @@ public class TreeHealth : MonoBehaviour
             if (logAnimator != null && logItem != null && logItem.data != null && logItem.data.dropClip != null)
             {
                 ModifyAnimationClip(logItem.data.dropClip, log.transform.position);
-                logAnimator.Play(logItem.data.dropClip.name);
+                //logAnimator.Play(logItem.data.dropClip.name);
             }
         }
         else
