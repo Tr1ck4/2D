@@ -2081,6 +2081,7 @@ GameObject:
   - component: {fileID: 1260158331}
   - component: {fileID: 1260158330}
   - component: {fileID: 1260158334}
+  - component: {fileID: 1260158335}
   m_Layer: 5
   m_Name: OptionMenu
   m_TagString: Untagged
@@ -2186,6 +2187,18 @@ MonoBehaviour:
   resolutionDropdown: {fileID: 823279729}
   volumeSlider: {fileID: 1065091987}
   menu: {fileID: 1260158328}
+--- !u!114 &1260158335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1260158328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bf79679df33c504ea9d4d4e0cccd6e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1272979386
 GameObject:
   m_ObjectHideFlags: 0
