@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe2dcea8613ec7a40b590acf1cab267a, type: 3}
   m_Name: RED_CHILLI_SEED
   m_EditorClassIdentifier: 
-  itemName: Chilli pole
+  itemName: Chilli seed
   price: 32
   itemSprite: {fileID: -762907784, guid: ef3e1ca863e9af940aa0249c440bd346, type: 3}
   dropClip: {fileID: 7400000, guid: 392782589b4877345aa0eeca261905fb, type: 2}

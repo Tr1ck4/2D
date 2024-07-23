@@ -22,6 +22,7 @@ public class PlayerMovement : MonoBehaviour
     public int money = 0;
 
     public CropDatabase cropDatabase;
+    public Player player;
 
     private void Awake()
     {
@@ -219,7 +220,12 @@ public class PlayerMovement : MonoBehaviour
             else if (GameManager.Instance.tileManager.IsMoisturized(position) &&
                 !GameManager.Instance.tileManager.HasCrop(position)) // Plant seed
             {
-                GameManager.Instance.tileManager.PlantCrop(position, cropDatabase.crops[1]);
+                Crop toPlant = cropDatabase.FindCropByName(player.inventory.seedSlot.itemName.ToLower());
+                if (toPlant != null) 
+                {
+                    GameManager.Instance.tileManager.PlantCrop(position, toPlant);
+                    player.inventory.Remove(player.inventory.seedSlotID, 1);
+                }
             }
             else if (GameManager.Instance.tileManager.IsHarvestable(position)) // Harvest
             {

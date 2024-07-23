@@ -23,9 +23,29 @@ public class Inventory
             maxCount = DEFAULT_MAX_COUNT;
         }
 
-        public bool CanAddItem()
+        public bool IsEmpty
         {
-            return count < maxCount;
+            get
+            {
+                if (itemName == "" && count == 0)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        public bool CanAddItem(string itemName)
+        {
+            return this.itemName == itemName && count < maxCount;
+        }
+
+        public bool CanAddItem(string itemName, int numNewItems)
+        {
+            Debug.Log(this.itemName == itemName);
+            Debug.Log(count + numNewItems);
+            Debug.Log(maxCount);
+            return (this.itemName == itemName) && (count + numNewItems <= maxCount);
         }
 
         public void AddItem(Item item)
@@ -35,22 +55,32 @@ public class Inventory
             this.count++;
         }
 
-        public void RemoveItem()
+        public void AddItem(string itemName, Sprite icon, int numNewItems)
+        {
+            this.itemName = itemName;
+            this.icon = icon;
+            this.count+= numNewItems;
+        }
+
+        public void RemoveItem(int numRemovedItems)
         {
             if (count > 0)
             {
-                count--;
-                if (count == 0)
+                count -= numRemovedItems;
+                if (count <= 0)
                 {
                     icon = null;
-                    itemName = "" ;
-
+                    itemName = "";
+                    count = 0;
                 }
             }
         }
     }
 
     public List<Slot> slots = new List<Slot>();
+
+    public int seedSlotID;
+    public Slot seedSlot;
 
     public Inventory(int numSlots)
     {
@@ -60,6 +90,8 @@ public class Inventory
             Slot slot = new Slot();
             slots.Add(slot);
         }
+        seedSlotID = numSlots;
+        seedSlot = new Slot();
         Load();
     }
 
@@ -80,7 +112,7 @@ public class Inventory
         //Debug.Log(item.itemName);
         foreach (Slot slot in slots)
         {
-            if (slot.itemName == item.data.itemName && slot.CanAddItem())
+            if (slot.itemName == item.data.itemName && slot.CanAddItem(item.data.itemName))
             {
                 slot.AddItem(item);
                 Save();
@@ -110,8 +142,71 @@ public class Inventory
     {
         if (slotIndex >= 0 && slotIndex < slots.Count)
         {
-            slots[slotIndex].RemoveItem();
+            slots[slotIndex].RemoveItem(1);
             Save();
+        }
+        else if (slotIndex == seedSlotID)
+        {
+            seedSlot.RemoveItem(1);
+            Save();
+        }
+    }
+
+    public void Remove(int slotIndex, int numRemovedItems)
+    {
+        if (slotIndex >= 0 && slotIndex < slots.Count)
+        {
+            if (slots[slotIndex].count >= numRemovedItems)
+            {
+                slots[slotIndex].RemoveItem(numRemovedItems);
+                Save();
+            }
+        }
+        else if (slotIndex == seedSlotID)
+        {
+            if (seedSlot.count >= numRemovedItems)
+            {
+                seedSlot.RemoveItem(numRemovedItems);
+                Save();
+            }
+        }
+    }
+
+    public void MoveSlot(int fromIndex, int toIndex)
+    {
+        Slot fromSlot;
+        Slot toSlot;
+        if (fromIndex == seedSlotID)
+        {
+            fromSlot = seedSlot;
+        }
+        else
+        {
+            fromSlot = slots[fromIndex];
+        }
+
+        if (toIndex == seedSlotID)
+        {
+            Debug.Log("moving into seedSlot");
+            if (fromSlot.itemName.Contains("seed"))
+            {
+                toSlot = seedSlot;
+            }
+            else
+            {
+                Debug.Log("Seedslot only contains seeds!");
+                return;
+            }
+        }
+        else
+        {
+            toSlot = slots[toIndex];
+        }
+
+        if (toSlot.IsEmpty || toSlot.CanAddItem(fromSlot.itemName, fromSlot.count))
+        {
+            toSlot.AddItem(fromSlot.itemName, fromSlot.icon, fromSlot.count);
+            fromSlot.RemoveItem(fromSlot.count);
         }
     }
 
