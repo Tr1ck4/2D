@@ -18,6 +18,18 @@ public class Slot_UI : MonoBehaviour
         else
         {
             Debug.LogWarning("Slot or UI components not properly initialized.");
+            if (slot == null)
+            {
+                Debug.Log("slot is null");
+            }
+            if (itemIcon == null)
+            {
+                Debug.Log("itemIcon is null");
+            }
+            if (quantityText == null)
+            {
+                Debug.Log("quantityText is null");
+            }
         }
     }
 

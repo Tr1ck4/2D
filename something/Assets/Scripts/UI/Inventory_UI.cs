@@ -1,10 +1,12 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class Inventory_UI : MonoBehaviour
 {
     public GameObject inventoryPanel;
     public Player player;
+    public GameObject inventorySlotPrefab; // Reference to the InventorySlot prefab
     public List<Slot_UI> slots = new List<Slot_UI>();
 
     private void Start()

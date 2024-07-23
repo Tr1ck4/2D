@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 
 public class Player : MonoBehaviour
 {
-    static int DEFAULT_INVENTORY_SLOTS = 44;
+    static int DEFAULT_INVENTORY_SLOTS = 18;
     public Inventory inventory;
 
     public CropDatabase cropDatabase; 

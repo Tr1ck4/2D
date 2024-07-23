@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class Inventory
 {
-    static int DEFAULT_MAX_COUNT = 44;
+    static int DEFAULT_MAX_COUNT = 18;
     private string saveFilePath;
 
     [System.Serializable]
