@@ -55059,7 +55059,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 299035773}
           m_TargetAssemblyTypeName: Inventory_UI, Assembly-CSharp
-          m_MethodName: DragRemove
+          m_MethodName: 
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
