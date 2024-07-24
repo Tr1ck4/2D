@@ -6,7 +6,7 @@ using System.IO;
 public class TreeSpawner : MonoBehaviour
 {
     public GameObject treePrefab;  // Assign your tree prefab in the Inspector
-    private int numberOfTrees = 35; // Number of trees to spawn
+    private int numberOfTrees = 50; // Number of trees to spawn
 
     public static TreeSpawner Instance;
     private List<Vector3> treePositions = new List<Vector3>();

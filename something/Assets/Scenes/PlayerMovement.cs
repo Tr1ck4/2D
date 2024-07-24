@@ -105,7 +105,7 @@ public class PlayerMovement : MonoBehaviour
         }
         if (other.CompareTag("OtherArea"))
         {
-            LoadArea(1, new Vector2(-13f, 7f));
+            LoadArea(1, new Vector2(10f, -7f));
         }
         if (other.CompareTag("ShopUp"))
         {
