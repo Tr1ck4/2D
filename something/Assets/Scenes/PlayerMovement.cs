@@ -61,6 +61,12 @@ public class PlayerMovement : MonoBehaviour
         SaveMoney(); // Save money after adding
     }
 
+    public void HackMoney()
+    {
+        money = 99999; 
+        SaveMoney();
+    }
+
     private void SaveMoney()
     {
         PlayerPrefs.SetInt("PlayerMoney", money);
